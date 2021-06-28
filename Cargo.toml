@@ -13,14 +13,6 @@ edition = "2018"
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
 
-[[bench]]
-name = "insert"
-harness = false
-
-[[bench]]
-name = "select"
-harness = false
-
 [[example]]
 name = "mock"
 required-features = ["test-util"]

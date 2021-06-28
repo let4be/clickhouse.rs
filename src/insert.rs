@@ -12,6 +12,7 @@ use crate::{
     row::{self, Row},
     rowbinary, Client, Compression,
 };
+use futures::{StreamExt};
 
 const BUFFER_SIZE: usize = 128 * 1024;
 const MIN_CHUNK_SIZE: usize = BUFFER_SIZE - 1024;
@@ -64,8 +65,11 @@ impl<T> Insert<T> {
 
         let future = client.client.request(request);
         let handle = tokio::spawn(async move {
-            // TODO: should we read the body?
-            let _ = Response::new(future, Compression::None).resolve().await?;
+            let mut res = Response::new(future, Compression::None);
+            let r = res.resolve().await?;
+            while let Some(_) = r.next().await {
+
+            }
             Ok(())
         });
 
